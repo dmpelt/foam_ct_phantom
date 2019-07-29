@@ -10,6 +10,7 @@
 // foam-like phantoms for CT.
 // -----------------------------------------------------------------------
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <omp.h>
 #include <stdlib.h>
@@ -82,11 +83,12 @@ unsigned int newsphere(float * const pos3, float * const ds, const float * const
                 }
                 z = zrange*(2*genRand(&randgen)-1);
                 int j;
-                #pragma omp parallel for reduction(min : dsv) firstprivate(x, y, z, nspheres) private(j)
+                #pragma omp parallel for shared(dsv) firstprivate(x, y, z, nspheres) private(j)
                 for(j=0; j<nspheres; j++){
                     const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
                     if(dsn<dsv){
-                        dsv = dsn;
+                        #pragma omp critical
+                        if(dsn<dsv) dsv = dsn;
                     }
                 }
             }
@@ -200,7 +202,7 @@ void genparproj(const float * const spheres, const unsigned int nspheres, float 
     {
         const unsigned int tidx = ntotal*omp_get_thread_num();
         #pragma omp for schedule(dynamic) private(i)
-        for(unsigned int i=0; i<nspheres; i++){
+        for(i=0; i<nspheres; i++){
             const long double s2 = spheres[5*i+3]*spheres[5*i+3];
             const long double py = spheres[5*i+2];
             const long double px = (rotc[0] + spheres[5*i]) * ca + (rotc[1] + spheres[5*i+1]) * sa;
