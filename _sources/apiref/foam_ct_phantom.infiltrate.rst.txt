@@ -1,0 +1,7 @@
+foam\_ct\_phantom.infiltrate module
+===================================
+
+.. automodule:: foam_ct_phantom.infiltrate
+   :members:
+   :undoc-members:
+   :show-inheritance:

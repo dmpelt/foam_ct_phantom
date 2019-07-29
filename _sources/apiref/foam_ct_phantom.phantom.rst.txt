@@ -1,0 +1,7 @@
+foam\_ct\_phantom.phantom module
+================================
+
+.. automodule:: foam_ct_phantom.phantom
+   :members:
+   :undoc-members:
+   :show-inheritance:

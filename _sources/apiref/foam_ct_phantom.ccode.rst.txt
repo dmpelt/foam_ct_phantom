@@ -1,0 +1,7 @@
+foam\_ct\_phantom.ccode module
+==============================
+
+.. automodule:: foam_ct_phantom.ccode
+   :members:
+   :undoc-members:
+   :show-inheritance:

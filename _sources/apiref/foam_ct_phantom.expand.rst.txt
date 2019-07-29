@@ -1,0 +1,7 @@
+foam\_ct\_phantom.expand module
+===============================
+
+.. automodule:: foam_ct_phantom.expand
+   :members:
+   :undoc-members:
+   :show-inheritance:

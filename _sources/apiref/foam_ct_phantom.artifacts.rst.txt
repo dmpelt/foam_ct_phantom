@@ -1,0 +1,7 @@
+foam\_ct\_phantom.artifacts module
+==================================
+
+.. automodule:: foam_ct_phantom.artifacts
+   :members:
+   :undoc-members:
+   :show-inheritance:

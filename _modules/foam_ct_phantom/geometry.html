@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>foam_ct_phantom.geometry &mdash; FoamCTPhantom  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> FoamCTPhantom
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FoamCTPhantom</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>foam_ct_phantom.geometry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for foam_ct_phantom.geometry</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-----------------------------------------------------------------------</span>
+<span class="c1">#Copyright 2019 Centrum Wiskunde &amp; Informatica, Amsterdam</span>
+<span class="c1">#</span>
+<span class="c1">#Author: Daniel M. Pelt</span>
+<span class="c1">#Contact: D.M.Pelt@cwi.nl</span>
+<span class="c1">#Website: http://dmpelt.github.io/foam_ct_phantom/</span>
+<span class="c1">#License: MIT</span>
+<span class="c1">#</span>
+<span class="c1">#This file is part of foam_ct_phantom, a Python package for generating</span>
+<span class="c1">#foam-like phantoms for CT.</span>
+<span class="c1">#-----------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+
+<div class="viewcode-block" id="VolumeGeometry"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.VolumeGeometry">[docs]</a><span class="k">class</span> <span class="nc">VolumeGeometry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">voxsize</span><span class="p">,</span> <span class="n">cx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cz</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">supersampling</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="n">ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="n">nz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voxsize</span> <span class="o">=</span> <span class="n">voxsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">cy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cz</span> <span class="o">=</span> <span class="n">cz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supersampling</span> <span class="o">=</span> <span class="n">supersampling</span>
+    
+<div class="viewcode-block" id="VolumeGeometry.to_astra"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.VolumeGeometry.to_astra">[docs]</a>    <span class="k">def</span> <span class="nf">to_astra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">single_slice</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cz</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Shifted center not supported yet&#39;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">astra</span>
+        <span class="k">if</span> <span class="n">single_slice</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">astra</span><span class="o">.</span><span class="n">create_vol_geom</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">astra</span><span class="o">.</span><span class="n">create_vol_geom</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="VolumeGeometry.to_dict"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.VolumeGeometry.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;nz&#39;</span><span class="p">,</span> <span class="s1">&#39;voxsize&#39;</span><span class="p">,</span> <span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="s1">&#39;cz&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">]:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;volgeom_&#39;</span><span class="o">+</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">att</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+    
+<div class="viewcode-block" id="VolumeGeometry.from_file"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.VolumeGeometry.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">att</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;nz&#39;</span><span class="p">,</span> <span class="s1">&#39;voxsize&#39;</span><span class="p">]:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">[</span><span class="s1">&#39;volgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="s1">&#39;cz&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">]:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span><span class="p">[</span><span class="s1">&#39;volgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ParallelGeometry"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ParallelGeometry">[docs]</a><span class="k">class</span> <span class="nc">ParallelGeometry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">pixsize</span><span class="p">,</span> <span class="n">cx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotcx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotcy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">supersampling</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="n">ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angles</span> <span class="o">=</span> <span class="n">angles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixsize</span> <span class="o">=</span> <span class="n">pixsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">cy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotcx</span> <span class="o">=</span> <span class="n">rotcx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotcy</span> <span class="o">=</span> <span class="n">rotcy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supersampling</span> <span class="o">=</span> <span class="n">supersampling</span>
+    
+<div class="viewcode-block" id="ParallelGeometry.to_astra"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ParallelGeometry.to_astra">[docs]</a>    <span class="k">def</span> <span class="nf">to_astra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">single_slice</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">astra</span>
+        <span class="k">if</span> <span class="n">single_slice</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">astra</span><span class="o">.</span><span class="n">create_proj_geom</span><span class="p">(</span><span class="s1">&#39;parallel&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angles</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">astra</span><span class="o">.</span><span class="n">create_proj_geom</span><span class="p">(</span><span class="s1">&#39;parallel3d&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angles</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ParallelGeometry.to_dict"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ParallelGeometry.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;projgeom_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;parallel&#39;</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;angles&#39;</span><span class="p">,</span> <span class="s1">&#39;pixsize&#39;</span><span class="p">,</span> <span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="s1">&#39;rotcx&#39;</span><span class="p">,</span> <span class="s1">&#39;rotcy&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">]:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">att</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+    
+<div class="viewcode-block" id="ParallelGeometry.from_file"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ParallelGeometry.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">att</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;projs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;angles&#39;</span><span class="p">,</span> <span class="s1">&#39;pixsize&#39;</span><span class="p">]:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="s1">&#39;rotcx&#39;</span><span class="p">,</span> <span class="s1">&#39;rotcy&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">]:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ConeGeometry"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ConeGeometry">[docs]</a><span class="k">class</span> <span class="nc">ConeGeometry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">pixsize</span><span class="p">,</span> <span class="n">sod</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sdd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">odd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">supersampling</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zoff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecuda</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="n">nx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="n">ny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angles</span> <span class="o">=</span> <span class="n">angles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixsize</span> <span class="o">=</span> <span class="n">pixsize</span>
+        <span class="k">if</span> <span class="n">sod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sdd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">odd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Two of SOD, SDD, or ODD have to be given&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">sod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sdd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sod</span> <span class="o">=</span> <span class="n">sod</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">odd</span> <span class="o">=</span> <span class="n">sdd</span> <span class="o">-</span> <span class="n">sod</span>
+        <span class="k">elif</span> <span class="n">sod</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">odd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sod</span> <span class="o">=</span> <span class="n">sod</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">odd</span> <span class="o">=</span> <span class="n">odd</span>
+        <span class="k">elif</span> <span class="n">sdd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">odd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sod</span> <span class="o">=</span> <span class="n">sdd</span> <span class="o">-</span> <span class="n">odd</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">odd</span> <span class="o">=</span> <span class="n">odd</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Two of SOD, SDD, or ODD have to be given&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supersampling</span> <span class="o">=</span> <span class="n">supersampling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoff</span> <span class="o">=</span> <span class="n">zoff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usecuda</span> <span class="o">=</span> <span class="n">usecuda</span>
+    
+<div class="viewcode-block" id="ConeGeometry.to_astra"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ConeGeometry.to_astra">[docs]</a>    <span class="k">def</span> <span class="nf">to_astra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">astra</span>
+        <span class="k">return</span> <span class="n">astra</span><span class="o">.</span><span class="n">create_proj_geom</span><span class="p">(</span><span class="s1">&#39;cone&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">angles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sod</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">pixsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">odd</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">pixsize</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ConeGeometry.to_dict"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ConeGeometry.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;projgeom_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;cone&#39;</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;angles&#39;</span><span class="p">,</span> <span class="s1">&#39;pixsize&#39;</span><span class="p">,</span> <span class="s1">&#39;sod&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">,</span> <span class="s1">&#39;zoff&#39;</span><span class="p">,</span> <span class="s1">&#39;usecuda&#39;</span><span class="p">]:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">att</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+    
+<div class="viewcode-block" id="ConeGeometry.from_file"><a class="viewcode-back" href="../../apiref/foam_ct_phantom.geometry.html#foam_ct_phantom.geometry.ConeGeometry.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">usecuda</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">att</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;projs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;angles&#39;</span><span class="p">,</span> <span class="s1">&#39;pixsize&#39;</span><span class="p">]:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sod&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">,</span> <span class="s1">&#39;supersampling&#39;</span><span class="p">,</span> <span class="s1">&#39;zoff&#39;</span><span class="p">]:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span><span class="p">[</span><span class="s1">&#39;projgeom_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;usecuda&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usecuda</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D.M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

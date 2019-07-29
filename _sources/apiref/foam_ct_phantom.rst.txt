@@ -1,0 +1,26 @@
+foam\_ct\_phantom package
+=========================
+
+Submodules
+----------
+
+.. toctree::
+
+   foam_ct_phantom.artifacts
+   foam_ct_phantom.ccode
+   foam_ct_phantom.expand
+   foam_ct_phantom.generate
+   foam_ct_phantom.geometry
+   foam_ct_phantom.infiltrate
+   foam_ct_phantom.phantom
+   foam_ct_phantom.project
+   foam_ct_phantom.utils
+   foam_ct_phantom.verticalmovement
+
+Module contents
+---------------
+
+.. automodule:: foam_ct_phantom
+   :members:
+   :undoc-members:
+   :show-inheritance:

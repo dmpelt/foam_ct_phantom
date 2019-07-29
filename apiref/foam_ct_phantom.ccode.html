@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>foam_ct_phantom.ccode module &mdash; FoamCTPhantom  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="foam_ct_phantom.expand module" href="foam_ct_phantom.expand.html" />
+    <link rel="prev" title="foam_ct_phantom.artifacts module" href="foam_ct_phantom.artifacts.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> FoamCTPhantom
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Example scripts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="foam_ct_phantom.html">foam_ct_phantom package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="foam_ct_phantom.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.artifacts.html">foam_ct_phantom.artifacts module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">foam_ct_phantom.ccode module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.expand.html">foam_ct_phantom.expand module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.generate.html">foam_ct_phantom.generate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.geometry.html">foam_ct_phantom.geometry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.infiltrate.html">foam_ct_phantom.infiltrate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.phantom.html">foam_ct_phantom.phantom module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.project.html">foam_ct_phantom.project module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.utils.html">foam_ct_phantom.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foam_ct_phantom.verticalmovement.html">foam_ct_phantom.verticalmovement module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="foam_ct_phantom.html#module-foam_ct_phantom">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FoamCTPhantom</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">API reference</a> &raquo;</li>
+        
+          <li><a href="foam_ct_phantom.html">foam_ct_phantom package</a> &raquo;</li>
+        
+      <li>foam_ct_phantom.ccode module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/apiref/foam_ct_phantom.ccode.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-foam_ct_phantom.ccode">
+<span id="foam-ct-phantom-ccode-module"></span><h1>foam_ct_phantom.ccode module<a class="headerlink" href="#module-foam_ct_phantom.ccode" title="Permalink to this headline">¶</a></h1>
+<dl class="attribute">
+<dt id="foam_ct_phantom.ccode.cfloatp">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">cfloatp</code><a class="headerlink" href="#foam_ct_phantom.ccode.cfloatp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">foam_ct_phantom.ccode.LP_c_float</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.asfloatp">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">asfloatp</code><span class="sig-paren">(</span><em class="sig-param">arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#asfloatp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.asfloatp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="foam_ct_phantom.ccode.cuintp">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">cuintp</code><a class="headerlink" href="#foam_ct_phantom.ccode.cuintp" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">foam_ct_phantom.ccode.LP_c_uint</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.asuintp">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">asuintp</code><span class="sig-paren">(</span><em class="sig-param">arr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#asuintp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.asuintp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.drawnewpositions">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">drawnewpositions</code><span class="sig-paren">(</span><em class="sig-param">pos3</em>, <em class="sig-param">ds</em>, <em class="sig-param">zrange</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#drawnewpositions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.drawnewpositions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.newsphere">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">newsphere</code><span class="sig-paren">(</span><em class="sig-param">pos3</em>, <em class="sig-param">ds</em>, <em class="sig-param">spheres</em>, <em class="sig-param">zrange</em>, <em class="sig-param">updated</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#newsphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.newsphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.gettouching">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">gettouching</code><span class="sig-paren">(</span><em class="sig-param">spheres</em>, <em class="sig-param">i</em>, <em class="sig-param">cutoff</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#gettouching"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.gettouching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.setthreads">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">setthreads</code><span class="sig-paren">(</span><em class="sig-param">nthrds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#setthreads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.setthreads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.setseed">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">setseed</code><span class="sig-paren">(</span><em class="sig-param">seed</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#setseed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.setseed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.genvol">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">genvol</code><span class="sig-paren">(</span><em class="sig-param">spheres</em>, <em class="sig-param">vol</em>, <em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">nz</em>, <em class="sig-param">voxsize</em>, <em class="sig-param">iz</em>, <em class="sig-param">cx=0</em>, <em class="sig-param">cy=0</em>, <em class="sig-param">cz=0</em>, <em class="sig-param">supersampling=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#genvol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.genvol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.average2d">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">average2d</code><span class="sig-paren">(</span><em class="sig-param">vol</em>, <em class="sig-param">supersampling</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#average2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.average2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.genparproj">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">genparproj</code><span class="sig-paren">(</span><em class="sig-param">spheres</em>, <em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">pixsize</em>, <em class="sig-param">angle</em>, <em class="sig-param">cx=0</em>, <em class="sig-param">cy=0</em>, <em class="sig-param">rotcx=0</em>, <em class="sig-param">rotcy=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#genparproj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.genparproj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.genconeproj">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">genconeproj</code><span class="sig-paren">(</span><em class="sig-param">spheres</em>, <em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">pixsize</em>, <em class="sig-param">angle</em>, <em class="sig-param">sod</em>, <em class="sig-param">sdd</em>, <em class="sig-param">zoff=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#genconeproj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.genconeproj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.applypoisson">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">applypoisson</code><span class="sig-paren">(</span><em class="sig-param">proj</em>, <em class="sig-param">flux</em>, <em class="sig-param">factor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#applypoisson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.applypoisson" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="foam_ct_phantom.ccode.genconeproj_cuda">
+<code class="sig-prename descclassname">foam_ct_phantom.ccode.</code><code class="sig-name descname">genconeproj_cuda</code><span class="sig-paren">(</span><em class="sig-param">spheres</em>, <em class="sig-param">nx</em>, <em class="sig-param">ny</em>, <em class="sig-param">pixsize</em>, <em class="sig-param">angle</em>, <em class="sig-param">sod</em>, <em class="sig-param">sdd</em>, <em class="sig-param">zoff=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/foam_ct_phantom/ccode.html#genconeproj_cuda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#foam_ct_phantom.ccode.genconeproj_cuda" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="foam_ct_phantom.expand.html" class="btn btn-neutral float-right" title="foam_ct_phantom.expand module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="foam_ct_phantom.artifacts.html" class="btn btn-neutral float-left" title="foam_ct_phantom.artifacts module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D.M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

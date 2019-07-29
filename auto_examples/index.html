@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example scripts &mdash; FoamCTPhantom  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 01: Generate a phantom" href="01_generate_phantom.html" />
+    <link rel="prev" title="Welcome to FoamCTPhantom’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> FoamCTPhantom
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_generate_phantom.html">Example 01: Generate a phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_plot_phantom.html">Example 02: Plot a phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_generate_projections_parallel.html">Example 03: Generate parallel-beam projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_generate_projections_cone.html">Example 04: Generate cone-beam projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_expanding_phantom.html">Example 05: Generate a 4D expanding phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_moving_phantom.html">Example 06: Generate a 4D moving phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07_infiltration_phantom.html">Example 07: Generate a 4D infiltration phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08_poisson_noise.html">Example 08: Apply Poission noise to projection data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09_reconstruct_astra.html">Example 09: Reconstruct data using ASTRA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FoamCTPhantom</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Example scripts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="example-scripts">
+<span id="sphx-glr-auto-examples"></span><h1>Example scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 01"><div class="figure align-default" id="id1">
+<img alt="../_images/sphx_glr_01_generate_phantom_thumb.png" src="../_images/sphx_glr_01_generate_phantom_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="01_generate_phantom.html#sphx-glr-auto-examples-01-generate-phantom-py"><span class="std std-ref">Example 01: Generate a phantom</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 02"><div class="figure align-default" id="id2">
+<img alt="../_images/sphx_glr_02_plot_phantom_thumb.png" src="../_images/sphx_glr_02_plot_phantom_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="02_plot_phantom.html#sphx-glr-auto-examples-02-plot-phantom-py"><span class="std std-ref">Example 02: Plot a phantom</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 03"><div class="figure align-default" id="id3">
+<img alt="../_images/sphx_glr_03_generate_projections_parallel_thumb.png" src="../_images/sphx_glr_03_generate_projections_parallel_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="03_generate_projections_parallel.html#sphx-glr-auto-examples-03-generate-projections-parallel-py"><span class="std std-ref">Example 03: Generate parallel-beam projections</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 04"><div class="figure align-default" id="id4">
+<img alt="../_images/sphx_glr_04_generate_projections_cone_thumb.png" src="../_images/sphx_glr_04_generate_projections_cone_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="04_generate_projections_cone.html#sphx-glr-auto-examples-04-generate-projections-cone-py"><span class="std std-ref">Example 04: Generate cone-beam projections</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 05"><div class="figure align-default" id="id5">
+<img alt="../_images/sphx_glr_05_expanding_phantom_thumb.png" src="../_images/sphx_glr_05_expanding_phantom_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="05_expanding_phantom.html#sphx-glr-auto-examples-05-expanding-phantom-py"><span class="std std-ref">Example 05: Generate a 4D expanding phantom</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 06"><div class="figure align-default" id="id6">
+<img alt="../_images/sphx_glr_06_moving_phantom_thumb.png" src="../_images/sphx_glr_06_moving_phantom_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="06_moving_phantom.html#sphx-glr-auto-examples-06-moving-phantom-py"><span class="std std-ref">Example 06: Generate a 4D moving phantom</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 07"><div class="figure align-default" id="id7">
+<img alt="../_images/sphx_glr_07_infiltration_phantom_thumb.png" src="../_images/sphx_glr_07_infiltration_phantom_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="07_infiltration_phantom.html#sphx-glr-auto-examples-07-infiltration-phantom-py"><span class="std std-ref">Example 07: Generate a 4D infiltration phantom</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 08"><div class="figure align-default" id="id8">
+<img alt="../_images/sphx_glr_08_poisson_noise_thumb.png" src="../_images/sphx_glr_08_poisson_noise_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="08_poisson_noise.html#sphx-glr-auto-examples-08-poisson-noise-py"><span class="std std-ref">Example 08: Apply Poission noise to projection data</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Example 09"><div class="figure align-default" id="id9">
+<img alt="../_images/sphx_glr_09_reconstruct_astra_thumb.png" src="../_images/sphx_glr_09_reconstruct_astra_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="09_reconstruct_astra.html#sphx-glr-auto-examples-09-reconstruct-astra-py"><span class="std std-ref">Example 09: Reconstruct data using ASTRA</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/cff432f37962b837b6b6f525054c3f7d/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/63c6de9503e57673ef49c337a26fa1d8/auto_examples_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="01_generate_phantom.html" class="btn btn-neutral float-right" title="Example 01: Generate a phantom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to FoamCTPhantom’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D.M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+foam\_ct\_phantom.geometry module
+=================================
+
+.. automodule:: foam_ct_phantom.geometry
+   :members:
+   :undoc-members:
+   :show-inheritance:

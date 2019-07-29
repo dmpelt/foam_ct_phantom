@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example 07: Generate a 4D infiltration phantom &mdash; FoamCTPhantom  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example 08: Apply Poission noise to projection data" href="08_poisson_noise.html" />
+    <link rel="prev" title="Example 06: Generate a 4D moving phantom" href="06_moving_phantom.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> FoamCTPhantom
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Example scripts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_generate_phantom.html">Example 01: Generate a phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_plot_phantom.html">Example 02: Plot a phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_generate_projections_parallel.html">Example 03: Generate parallel-beam projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_generate_projections_cone.html">Example 04: Generate cone-beam projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_expanding_phantom.html">Example 05: Generate a 4D expanding phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_moving_phantom.html">Example 06: Generate a 4D moving phantom</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 07: Generate a 4D infiltration phantom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08_poisson_noise.html">Example 08: Apply Poission noise to projection data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09_reconstruct_astra.html">Example 09: Reconstruct data using ASTRA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../apiref/modules.html">API reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FoamCTPhantom</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Example scripts</a> &raquo;</li>
+        
+      <li>Example 07: Generate a 4D infiltration phantom</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/07_infiltration_phantom.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-07-infiltration-phantom-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-07-generate-a-4d-infiltration-phantom">
+<span id="sphx-glr-auto-examples-07-infiltration-phantom-py"></span><h1>Example 07: Generate a 4D infiltration phantom<a class="headerlink" href="#example-07-generate-a-4d-infiltration-phantom" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">foam_ct_phantom</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
+
+<span class="n">random_seed</span> <span class="o">=</span> <span class="mi">9876</span>
+
+<span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">InfiltrationFoamPhantom</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="s1">&#39;test_infiltration.h5&#39;</span><span class="p">,</span><span class="s1">&#39;test_phantom.h5&#39;</span><span class="p">,</span><span class="n">random_seed</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">startz</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
+
+<span class="n">infiltration_phantom</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">InfiltrationFoamPhantom</span><span class="p">(</span><span class="s1">&#39;test_infiltration.h5&#39;</span><span class="p">)</span>
+
+<span class="n">vol_geom</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">VolumeGeometry</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="o">/</span><span class="mi">256</span><span class="p">)</span>
+
+<span class="n">infiltration_phantom</span><span class="o">.</span><span class="n">generate_volume</span><span class="p">(</span><span class="s1">&#39;test_infiltration_vol_start.h5&#39;</span><span class="p">,</span> <span class="n">vol_geom</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">infiltration_phantom</span><span class="o">.</span><span class="n">generate_volume</span><span class="p">(</span><span class="s1">&#39;test_infiltration_vol_end.h5&#39;</span><span class="p">,</span> <span class="n">vol_geom</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">vol0</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">load_volume</span><span class="p">(</span><span class="s1">&#39;test_infiltration_vol_start.h5&#39;</span><span class="p">)</span>
+<span class="n">vol1</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">load_volume</span><span class="p">(</span><span class="s1">&#39;test_infiltration_vol_end.h5&#39;</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">vol0</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">vol1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">proj_geom</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">ParallelGeometry</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="kc">False</span><span class="p">),</span><span class="mi">3</span><span class="o">/</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">infiltration_phantom</span><span class="o">.</span><span class="n">generate_projections</span><span class="p">(</span><span class="s1">&#39;test_infiltration_projs.h5&#39;</span><span class="p">,</span> <span class="n">proj_geom</span><span class="p">)</span>
+
+
+<span class="n">projs</span> <span class="o">=</span> <span class="n">foam_ct_phantom</span><span class="o">.</span><span class="n">load_projections</span><span class="p">(</span><span class="s1">&#39;test_infiltration_projs.h5&#39;</span><span class="p">)</span>
+
+<span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">projs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">projs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-07-infiltration-phantom-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/4ab401bf068a46ddef213b9f7752e54c/07_infiltration_phantom.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">07_infiltration_phantom.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/b7268c338bee1f2d67b5030331fabbe8/07_infiltration_phantom.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">07_infiltration_phantom.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="08_poisson_noise.html" class="btn btn-neutral float-right" title="Example 08: Apply Poission noise to projection data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="06_moving_phantom.html" class="btn btn-neutral float-left" title="Example 06: Generate a 4D moving phantom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, D.M. Pelt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
