@@ -15,6 +15,16 @@
 #include <omp.h>
 #include <stdlib.h>
 
+#ifdef _MSC_VER
+
+#define DECLDIR __declspec(dllexport)
+
+#else
+
+#define DECLDIR
+
+#endif
+
 #ifndef __MTWISTER_H
 #define __MTWISTER_H
 
@@ -35,16 +45,16 @@ void m_seedRand(MTRand* rand, unsigned long seed);
 
 
 // OpenMP set number of threads
-void set_threads(const unsigned int nthrd){
+DECLDIR void set_threads(const unsigned int nthrd){
     omp_set_num_threads(nthrd);
 }
 
 MTRand randgen;
-void setseed(const unsigned int seed){
+DECLDIR void setseed(const unsigned int seed){
     m_seedRand(&randgen, seed);
 }
 
-void drawnewpositions(float * const pos3, float * const ds, const unsigned int ntrials, const float zrange){
+DECLDIR void drawnewpositions(float * const pos3, float * const ds, const unsigned int ntrials, const float zrange){
     for(unsigned int i=0; i<ntrials; i++){
         float x,y,z;
         while(1){
@@ -62,7 +72,7 @@ void drawnewpositions(float * const pos3, float * const ds, const unsigned int n
     }
 }
 
-unsigned int newsphere(float * const pos3, float * const ds, const float * const spheres, const unsigned int ntrials, const unsigned int nspheres, const float zrange, unsigned int * const updated){
+DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float * const spheres, const unsigned int ntrials, const unsigned int nspheres, const float zrange, unsigned int * const updated){
     const float nx = spheres[(nspheres-1)*5];
     const float ny = spheres[(nspheres-1)*5+1];
     const float nz = spheres[(nspheres-1)*5+2];
@@ -111,7 +121,7 @@ unsigned int newsphere(float * const pos3, float * const ds, const float * const
 }
 
 
-void genvol(const float * const spheres, const unsigned int nspheres, float * const vol, const unsigned int * const n, const float voxsize, const float * const c, const unsigned int supersampling, const unsigned int iz){
+DECLDIR void genvol(const float * const spheres, const unsigned int nspheres, float * const vol, const unsigned int * const n, const float voxsize, const float * const c, const unsigned int supersampling, const unsigned int iz){
     const unsigned int ninslc = n[0]*n[1];
     int i;
     #pragma omp parallel for private(i)
@@ -177,7 +187,7 @@ void genvol(const float * const spheres, const unsigned int nspheres, float * co
     }
 }
 
-void genparproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float * const c, const float angle, const float * const rotc){
+DECLDIR void genparproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float * const c, const float angle, const float * const rotc){
     const unsigned int ntotal = n[0]*n[1];
     const long double ca = cosl(angle);
     const long double sa = sinl(angle);
@@ -243,7 +253,7 @@ void genparproj(const float * const spheres, const unsigned int nspheres, float 
     free(temp);
 }
 
-void genconeproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float zoff, const float sod, const float sdd){
+DECLDIR void genconeproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float zoff, const float sod, const float sdd){
     const unsigned int ntotal = n[0]*n[1];
     int i;
     #pragma omp parallel for schedule(dynamic) private(i)
@@ -297,7 +307,7 @@ void genconeproj(const float * const spheres, const unsigned int nspheres, float
 }
     
 
-void average2d(const float * const invol, float * const outvol, const unsigned int nx, const unsigned int ny, const unsigned int ss){
+DECLDIR void average2d(const float * const invol, float * const outvol, const unsigned int nx, const unsigned int ny, const unsigned int ss){
     const unsigned int npix = nx*ny;
     int i;
     #pragma omp parallel for private(i)
@@ -314,7 +324,7 @@ void average2d(const float * const invol, float * const outvol, const unsigned i
     }
 }
 
-unsigned int gettouching(const float * const spheres, const unsigned int nspheres, const unsigned int i, const float cutoff, unsigned int * const indices){
+DECLDIR unsigned int gettouching(const float * const spheres, const unsigned int nspheres, const unsigned int i, const float cutoff, unsigned int * const indices){
     const unsigned int nthr = omp_get_max_threads();
     unsigned int * const js = (unsigned int *) malloc(nthr*nspheres*sizeof(unsigned int));
     unsigned int * const njs = (unsigned int *) malloc(nthr*sizeof(unsigned int));
@@ -401,7 +411,7 @@ float poisson(const float lambda){
 
 
 
-void applypoisson(float * const proj, const unsigned int npix, const float flux, const float factor){
+DECLDIR void applypoisson(float * const proj, const unsigned int npix, const float flux, const float factor){
     int i;
     #pragma omp parallel for private(i)
     for(i=0; i<npix; i++){
