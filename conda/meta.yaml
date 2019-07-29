@@ -1,0 +1,38 @@
+package:
+  name: foam_ct_phantom
+  version: 1.0.0
+
+source:
+  path: ../
+  
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv  # [linux]
+  script: {{ PYTHON }} setup.py bdist_wheel --plat-name macosx-10.9-x86_64 && pip install --no-index --find-links=dist foam_ct_phantom  # [osx]
+  script: {{ PYTHON }} -m pip install . -vv --install-option=--generator --install-option="NMake Makefiles"  # [win]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+  host:
+    - python {{ python }}
+    - setuptools
+    - scikit-build
+    - openmp
+    - pip
+  run:
+    - python
+    - numpy
+    - scipy
+    - tqdm
+    - h5py
+    - psutil
+    - numba
+    - sortedcollections
+    - openmp
+    - pathlib2
+    
+test:
+  # Python imports
+  imports:
+    - foam_ct_phantom
