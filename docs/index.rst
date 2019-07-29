@@ -6,6 +6,13 @@
 Welcome to FoamCTPhantom's documentation!
 =========================================
 
+.. image:: https://travis-ci.com/dmpelt/foam_ct_phantom.svg?branch=master
+   :target: https://travis-ci.com/dmpelt/foam_ct_phantom
+
+.. image:: https://ci.appveyor.com/api/projects/status/qp6ceia7iu05v7kr/branch/master?svg=true
+   :target: https://ci.appveyor.com/project/dmpelt/foam-ct-phantom/branch/master
+
+
 A Python package for generating foam-like phantoms for CT.
 
 * `[Latest Release] <https://github.com/dmpelt/foam_ct_phantom/releases/latest>`_
