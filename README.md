@@ -1,5 +1,9 @@
 # foam_ct_phantom
 
+[![Build Status](https://travis-ci.com/dmpelt/foam_ct_phantom.svg?branch=master)](https://travis-ci.com/dmpelt/foam_ct_phantom) [![Build status](https://ci.appveyor.com/api/projects/status/qp6ceia7iu05v7kr/branch/master?svg=true)](https://ci.appveyor.com/project/dmpelt/foam-ct-phantom/branch/master)
+
+
+
 A Python package for generating foam-like phantoms for CT.
 
 * [\[Latest Release\]](https://github.com/dmpelt/foam_ct_phantom/releases/latest)
