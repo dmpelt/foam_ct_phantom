@@ -16,4 +16,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cicwi/foam_ct_phantom/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.0.0...HEAD
