@@ -1,7 +1,9 @@
-# foam_ct_phantom
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/foam_ct_phantom/badges/version.svg)](https://anaconda.org/conda-forge/foam_ct_phantom) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/foam_ct_phantom/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/foam_ct_phantom) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/foam_ct_phantom/badges/platforms.svg)](https://anaconda.org/conda-forge/foam_ct_phantom) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/foam_ct_phantom/badges/license.svg)](https://anaconda.org/conda-forge/foam_ct_phantom) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/foam_ct_phantom/badges/downloads.svg)](https://anaconda.org/conda-forge/foam_ct_phantom)
 
 [![Build Status](https://travis-ci.com/dmpelt/foam_ct_phantom.svg?branch=master)](https://travis-ci.com/dmpelt/foam_ct_phantom) [![Build status](https://ci.appveyor.com/api/projects/status/qp6ceia7iu05v7kr/branch/master?svg=true)](https://ci.appveyor.com/project/dmpelt/foam-ct-phantom/branch/master)
 
+
+# foam_ct_phantom
 
 
 A Python package for generating foam-like phantoms for CT.

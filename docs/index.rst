@@ -6,6 +6,21 @@
 Welcome to FoamCTPhantom's documentation!
 =========================================
 
+.. image:: https://anaconda.org/conda-forge/foam_ct_phantom/badges/version.svg
+   :target: https://anaconda.org/conda-forge/foam_ct_phantom
+
+.. image:: https://anaconda.org/conda-forge/foam_ct_phantom/badges/latest_release_date.svg
+   :target: https://anaconda.org/conda-forge/foam_ct_phantom
+
+.. image:: https://anaconda.org/conda-forge/foam_ct_phantom/badges/platforms.svg
+   :target: https://anaconda.org/conda-forge/foam_ct_phantom
+
+.. image:: https://anaconda.org/conda-forge/foam_ct_phantom/badges/license.svg
+   :target: https://anaconda.org/conda-forge/foam_ct_phantom
+
+.. image:: https://anaconda.org/conda-forge/foam_ct_phantom/badges/downloads.svg
+   :target: https://anaconda.org/conda-forge/foam_ct_phantom
+
 .. image:: https://travis-ci.com/dmpelt/foam_ct_phantom.svg?branch=master
    :target: https://travis-ci.com/dmpelt/foam_ct_phantom
 
