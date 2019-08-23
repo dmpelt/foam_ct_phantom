@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Support for nonuniform void distributions
 
 ### Changed
 
@@ -11,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-## 1.0.0 - 2019-XX-XX
+## 1.0.0 - 2019-08-02
 
 ### Added
 - Initial release

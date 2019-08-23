@@ -15,6 +15,7 @@ import random
 import sortedcollections
 import tqdm
 import h5py
+import inspect
 
 from . import ccode, project, geometry
 from .utils import FILE_VERSION
@@ -33,6 +34,11 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
     
     ccode.drawnewpositions(pos3, ds, zrange)
 
+    if callable(maxsize):
+        maxsizes = maxsize(pos3[::3],pos3[1::3], pos3[2::3])
+        msk = ds<-maxsizes
+        ds[msk] = -maxsizes[msk]
+
     upd = np.zeros(n, dtype=np.uint32)
     spheres = np.zeros(nsph*5, dtype=np.float32)
 
@@ -40,7 +46,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
 
     for i in tqdm.trange(nsph):
         itms = sd.items()
-        if itms[0][1]<-maxsize:
+        if callable(maxsize)==False and itms[0][1]<-maxsize:
             allchoices = []
             for itm in itms:
                 if itm[1] >= -maxsize:
@@ -49,12 +55,23 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
             ch = random.choice(allchoices)
             spheres[5*i+3] = maxsize
         else:
-            ch = itms[0][0]
+            allchoices = [itms[0][0],]
+            curmax = itms[0][1]
+            for itm in range(1,len(itms)):
+                if itms[itm][1] == curmax:
+                    allchoices.append(itms[itm][0])
+                else:
+                    break
+            ch = random.choice(allchoices)
             spheres[5*i+3] = -sd[ch]
         spheres[5*i] = pos3[3*ch]
         spheres[5*i+1] = pos3[3*ch+1]
         spheres[5*i+2] = pos3[3*ch+2]
         nupd = ccode.newsphere(pos3, ds, spheres[:5*(i+1)], zrange, upd)
+        if callable(maxsize):
+            maxsizes = maxsize(pos3[3*upd[:nupd]],pos3[3*upd[:nupd]+1],pos3[3*upd[:nupd]+2])
+            msk = ds[upd[:nupd]] < -maxsizes
+            ds[upd[:nupd][msk]] = -maxsizes[msk]
         for ky in upd[:nupd]:
             sd[ky] = ds[ky]
     
@@ -65,7 +82,10 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
         att['seed'] = seed
         att['nspheres_per_unit'] = nspheres_per_unit
         att['ntrials_per_unit'] = ntrials_per_unit
-        att['maxsize'] = maxsize
+        if callable(maxsize):
+            att['maxsize'] = inspect.getsource(maxsize)
+        else:
+            att['maxsize'] = maxsize
         att['zrange'] = zrange
 
 
