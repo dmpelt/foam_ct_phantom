@@ -253,6 +253,98 @@ DECLDIR void genparproj(const float * const spheres, const unsigned int nspheres
     free(temp);
 }
 
+DECLDIR void gen3dproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float maxz, const float * const rot, const unsigned int cutout, const float cutoff){
+    const unsigned int ntotal = n[0]*n[1];
+    int i;
+
+    const unsigned int nthr = omp_get_max_threads();
+    long double * const temp = (long double *) calloc(nthr*ntotal,sizeof(long double));
+    long double * const mint = (long double *) malloc(nthr*ntotal*sizeof(long double));
+    
+    #pragma omp parallel for private(i)
+    for(i=0;i<nthr*ntotal;i++){
+        mint[i] = INFINITY;
+    }
+
+    #pragma omp parallel
+    {
+        const unsigned int tidx = ntotal*omp_get_thread_num();
+        #pragma omp for schedule(dynamic) private(i)
+        for(i=0; i<nspheres; i++){
+            if(spheres[5*i+4]<cutoff) continue;
+            const long double s2 = spheres[5*i+3]*spheres[5*i+3];
+            const long double px = spheres[5*i];
+            const long double pz = spheres[5*i+1];
+            const long double py = spheres[5*i+2];
+            const long double pyi = py/pixsize + 0.5*(n[1]-1);
+            const long double pxi = px/pixsize + 0.5*(n[0]-1);
+            const unsigned int sz = spheres[5*i+3]/pixsize + 1;
+            int l = pxi-sz;
+            int r = pxi+sz;
+            int u = pyi-sz;
+            int d = pyi+sz;
+            if(l<0) l=0;
+            if(r>=n[0]) r=n[0]-1;
+            if(u<0) u=0;
+            if(d>=n[1]) d=n[1]-1;
+            for(unsigned int j=u; j<=d;j++){
+                const long double y = (j+0.5)*pixsize - n[1]*pixsize/2;
+                const long double dy = (y-spheres[5*i+2])*(y-spheres[5*i+2]);
+                if(dy >= s2) continue;
+                for(unsigned int k=l; k<=r; k++){
+                    const long double x = (k+0.5)*pixsize - n[0]*pixsize/2;
+                    const long double dx = (x-px)*(x-px);
+                    if(dx+dy<s2){
+                        long double t = pz - sqrtl(s2 - dx - dy);
+                        long double rx = rot[0]*x + rot[1]*t + rot[2]*y;
+                        long double ry = rot[3]*x + rot[4]*t + rot[5]*y;
+                        long double rz = rot[6]*x + rot[7]*t + rot[8]*y;
+                        long double fac = 1;
+                        char reject = fabsl(rz)>maxz;
+                        if(!reject && cutout>0){
+                            reject = rx<0 && ry<0 && rz<0;
+                        }
+                        if (reject){
+                            fac = 0.75;
+                            t = pz + sqrtl(s2 - dx - dy);
+                            rx = rot[0]*x + rot[1]*t + rot[2]*y;
+                            ry = rot[3]*x + rot[4]*t + rot[5]*y;
+                            rz = rot[6]*x + rot[7]*t + rot[8]*y;
+                            reject = fabsl(rz)>maxz;
+                            if(!reject && cutout>0){
+                                reject = rx<0 && ry<0 && rz<0;
+                            }
+                            if (reject){
+                                continue;
+                            }
+                        }
+                        if(t < mint[tidx+j*n[0]+k]){
+                            mint[tidx+j*n[0]+k] = t;
+                            temp[tidx+j*n[0]+k] = fac*sqrtl(s2 - dx - dy)/spheres[5*i+3];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #pragma omp parallel for private(i)
+    for(i=0; i<ntotal; i++){
+        long double tmpf = temp[i];
+        long double cmint = mint[i];
+        for(unsigned int j=1;j<nthr;j++){
+            if(mint[j*ntotal + i]<cmint){
+                cmint = mint[j*ntotal + i];
+                tmpf = temp[j*ntotal + i];
+            }
+            
+        }
+        proj[i] = tmpf;
+    }
+    free(temp);
+    free(mint);
+}
+
 DECLDIR void genconeproj(const float * const spheres, const unsigned int nspheres, float * const proj, const unsigned int * const n, const float pixsize, const float zoff, const float sod, const float sdd){
     const unsigned int ntotal = n[0]*n[1];
     int i;

@@ -10,7 +10,7 @@
 #foam-like phantoms for CT.
 #-----------------------------------------------------------------------
 
-from . import project,generate,geometry
+from . import project,generate,geometry,ccode
 from .utils import FILE_VERSION
 
 import numpy as np
@@ -80,6 +80,19 @@ def genvol_expand(time, outfile, phantom, geom):
     cur_vol = __get_material_volume(spheres)
     factor = (start_vol/cur_vol)**(1/3)
     generate.genvol(outfile, spheres, geom, zoomfactor=1/factor)
+
+def gen3d_expand(time, phantom, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+    with h5py.File(phantom, 'r') as f:
+        spheres = f['spheres'][:]
+        sizes = f['sizes'][:]
+    start_vol = __get_material_volume(spheres)
+    size_time = np.interp(time, np.linspace(0,1,sizes.size), sizes)
+    spheres[3::5] *= size_time
+    cur_vol = __get_material_volume(spheres)
+    factor = (start_vol/cur_vol)**(1/3)
+    spheres *= factor
+    spheres[4::5] /= factor
+    return ccode.gen3dproj(spheres, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
 
 def gen_dataset_expand(outfile, phantom, geom):
     angles = geom.angles

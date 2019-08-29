@@ -10,7 +10,7 @@
 #foam-like phantoms for CT.
 #-----------------------------------------------------------------------
 
-from . import project,generate,geometry
+from . import project,generate,geometry,ccode
 from .utils import FILE_VERSION
 
 import numpy as np
@@ -65,6 +65,14 @@ def genvol_verticalmovement(time, outfile, phantom, geom):
     ypos_time = np.interp(time, np.linspace(0,1,ypos.size), ypos)
     spheres[2::5] -= ypos_time
     generate.genvol(outfile, spheres, geom)
+
+def gen3d_verticalmovement(time, phantom, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+    with h5py.File(phantom, 'r') as f:
+        spheres = f['spheres'][:]
+        ypos = f['ypos'][:]
+    ypos_time = np.interp(time, np.linspace(0,1,ypos.size), ypos)
+    spheres[2::5] -= ypos_time
+    return ccode.gen3dproj(spheres, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
 
 def gen_dataset_verticalmovement(outfile, phantom, geom):
     angles = geom.angles
