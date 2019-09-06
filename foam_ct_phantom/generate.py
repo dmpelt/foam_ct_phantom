@@ -114,6 +114,14 @@ def genvol(outfile, phantom, geom, zoomfactor=1):
         if isinstance(phantom, str):
             att['phantom'] = phantom
 
+def gen3d(phantom, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+    if isinstance(phantom, str):
+        with h5py.File(phantom, 'r') as f:
+            spheres = f['spheres'][:]
+    else:
+        spheres = phantom
+    return ccode.gen3dproj(spheres, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
+
 def gen_dataset(outfile, phantom, geom):
     angles = geom.angles
     nx = geom.nx

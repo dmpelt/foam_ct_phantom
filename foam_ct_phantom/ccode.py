@@ -78,6 +78,26 @@ def genparproj(spheres, nx, ny, pixsize, angle, cx=0, cy=0, rotcx=0, rotcy=0):
     lib.genparproj(asfloatp(spheres), asuint(spheres.size//5), asfloatp(proj.ravel()), asuintp(n), asfloat(pixsize), asfloatp(c), asfloat(angle), asfloatp(rotc))
     return proj
 
+def gen3dproj(spheres, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+    sph_rot = spheres.copy()
+    trot1 = np.array([[1,0,0],[0,np.cos(tilt1), -np.sin(tilt1)],[0,np.sin(tilt1),np.cos(tilt1)]])
+    trot2 = np.array([[np.cos(tilt2),0,np.sin(tilt2)],[0,1,0],[-np.sin(tilt2), 0, np.cos(tilt2)]])
+    arot = np.array([[np.cos(angle), -np.sin(angle),0],[np.sin(angle),np.cos(angle),0],[0,0,1]])
+    rot = np.dot(trot2,np.dot(trot1,arot))
+    pos = np.array([spheres[::5],spheres[1::5],spheres[2::5]])
+    pos_rot = np.dot(rot,pos)
+    trot1 = np.array([[1,0,0],[0,np.cos(-tilt1), -np.sin(-tilt1)],[0,np.sin(-tilt1),np.cos(-tilt1)]])
+    trot2 = np.array([[np.cos(-tilt2),0,np.sin(-tilt2)],[0,1,0],[-np.sin(-tilt2), 0, np.cos(-tilt2)]])
+    arot = np.array([[np.cos(-angle), -np.sin(-angle),0],[np.sin(-angle),np.cos(-angle),0],[0,0,1]])
+    rot = np.dot(arot,np.dot(trot1,trot2)).astype(np.float32)
+    sph_rot[::5] = pos_rot[0]
+    sph_rot[1::5] = pos_rot[1]
+    sph_rot[2::5] = pos_rot[2]
+    proj = np.zeros((ny,nx),dtype=np.float32)
+    n = np.array([nx,ny],dtype=np.uint32)
+    lib.gen3dproj(asfloatp(sph_rot), asuint(spheres.size//5), asfloatp(proj.ravel()), asuintp(n), asfloat(pixsize), asfloat(maxz), asfloatp(rot), asuint(cutout), asfloat(cutoff))
+    return proj
+
 def genconeproj(spheres, nx, ny, pixsize, angle, sod, sdd, zoff=0):
     proj = np.zeros((ny,nx),dtype=np.float32)
     n = np.array([nx,ny],dtype=np.uint32)

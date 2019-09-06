@@ -14,6 +14,7 @@ from . import generate, infiltrate, project, verticalmovement, expand
 
 import abc
 import os.path
+import numpy as np
 
 class Phantom(object):
     
@@ -44,6 +45,9 @@ class FoamPhantom(Phantom):
     
     def generate_volume(self, outfile, geom):
         generate.genvol(outfile, self.filename,geom)
+    
+    def generate_3d(self, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+        return generate.gen3d(self.filename, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
 
 class MovingFoamPhantom(Phantom):
 
@@ -56,6 +60,9 @@ class MovingFoamPhantom(Phantom):
     
     def generate_volume(self, outfile, geom, time=0):
         verticalmovement.genvol_verticalmovement(time, outfile, self.filename, geom)
+    
+    def generate_3d(self, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf, time=0):
+        return verticalmovement.gen3d_verticalmovement(time, self.filename, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
 
 class ExpandingFoamPhantom(Phantom):
 
@@ -68,6 +75,9 @@ class ExpandingFoamPhantom(Phantom):
     
     def generate_volume(self, outfile, geom, time=0):
         expand.genvol_expand(time, outfile, self.filename, geom)
+    
+    def generate_3d(self, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf, time=0):
+        return expand.gen3d_expand(time, self.filename, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)
 
 class InfiltrationFoamPhantom(Phantom):
 
@@ -80,3 +90,6 @@ class InfiltrationFoamPhantom(Phantom):
     
     def generate_volume(self, outfile, geom, time=0):
         infiltrate.genvol_infiltrate(time, outfile, self.filename,geom)
+    
+    def generate_3d(self, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf, time=0):
+        return infiltrate.gen3d_infiltrate(time, self.filename, nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=cutoff)

@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Support for nonuniform void distributions
+- Support for creating 3D renderings of voids
 
 ### Changed
 

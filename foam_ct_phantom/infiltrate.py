@@ -86,6 +86,16 @@ def genvol_infiltrate(time, outfile, phantom, geom):
     spheres[arrival>time,-1] = 0
     return generate.genvol(outfile, spheres.ravel(), geom)
 
+def gen3d_infiltrate(time, phantom, nx, ny, pixsize, angle, tilt1, tilt2, maxz=1.5, cutout=0, cutoff=-np.inf):
+    with h5py.File(phantom, 'r') as f:
+        spheres = f['spheres'][:].reshape((-1,5))
+        arrival = f['arrival'][:]
+        fluid_value = f['arrival'].attrs['fluid_value']
+    
+    spheres[arrival<=time,-1] = fluid_value
+    spheres[arrival>time,-1] = 0
+    return ccode.gen3dproj(spheres.ravel(), nx, ny, pixsize, angle, tilt1, tilt2, maxz=maxz, cutout=cutout, cutoff=fluid_value)
+
 def gen_dataset_infiltrate(outfile, phantom, geom):
     angles = geom.angles
     nx = geom.nx
