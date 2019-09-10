@@ -5,6 +5,7 @@
 
 # foam_ct_phantom
 
+![Example image](./readme_image.svg)
 
 A Python package for generating foam-like phantoms for CT.
 
