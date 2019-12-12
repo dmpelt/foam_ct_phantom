@@ -84,7 +84,10 @@ class ParallelGeometry(object):
         with h5py.File(fn, 'r') as f:
             att = f['projs'].attrs
             for key in ['nx', 'ny', 'angles', 'pixsize']:
-                args.append(att['projgeom_'+key])
+                if key == 'angles' and 'projgeom_angles' in f.keys():
+                    args.append(f['projgeom_angles'][:])
+                else:
+                    args.append(att['projgeom_'+key])
             for key in ['cx', 'cy', 'rotcx', 'rotcy', 'supersampling']:
                 kwargs[key] = att['projgeom_'+key]
         return cls(*args, **kwargs)
@@ -131,7 +134,10 @@ class ConeGeometry(object):
         with h5py.File(fn, 'r') as f:
             att = f['projs'].attrs
             for key in ['nx', 'ny', 'angles', 'pixsize']:
-                args.append(att['projgeom_'+key])
+                if key == 'angles' and 'projgeom_angles' in f.keys():
+                    args.append(f['projgeom_angles'][:])
+                else:
+                    args.append(att['projgeom_'+key])
             for key in ['sod', 'odd', 'supersampling', 'zoff']:
                 kwargs[key] = att['projgeom_'+key]
             kwargs['usecuda'] = usecuda

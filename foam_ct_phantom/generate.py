@@ -138,6 +138,9 @@ def gen_dataset(outfile, phantom, geom):
                 dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=geom.usecuda)
         att = dset.attrs
         for key, val in geom.to_dict().items():
-            att[key] = val
+            if key == "projgeom_angles":
+                f['projgeom_angles'] = val
+            else:
+                att[key] = val
         att['phantom'] = phantom
 

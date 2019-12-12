@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+- Saving and loading projection datasets with many angles (8192 or more)
 
 ### Removed
 
