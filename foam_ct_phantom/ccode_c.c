@@ -79,6 +79,7 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
     const float nz = spheres[(nspheres-1)*5+2];
     const float nsz = spheres[(nspheres-1)*5+3];
     unsigned int nupdated=0;
+    #pragma omp parallel for shared(nupdated, updated)
     for(unsigned int i=0; i<ntrials; i++){
         float x = pos3[3*i];
         float y = pos3[3*i+1];
@@ -94,12 +95,10 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
                 }
                 z = zrange*(2*genRand(&randgen)-1);
                 int j;
-                #pragma omp parallel for shared(dsv) firstprivate(x, y, z, nspheres) private(j)
                 for(j=0; j<nspheres; j++){
                     const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
                     if(dsn<dsv){
-                        #pragma omp critical
-                        if(dsn<dsv) dsv = dsn;
+                        dsv = dsn;
                     }
                 }
             }
@@ -107,13 +106,19 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
             pos3[3*i+1] = y;
             pos3[3*i+2] = z;
             ds[i] = -dsv;
-            updated[nupdated] = i;
-            nupdated++;
+            #pragma omp critical
+            {
+                updated[nupdated] = i;
+                nupdated++;
+            }
         }else{
             if(dsv<-ds[i]){
                 ds[i] = -dsv;
-                updated[nupdated] = i;
-                nupdated++;
+                #pragma omp critical
+                {
+                    updated[nupdated] = i;
+                    nupdated++;
+                }
             }
         }
     }
