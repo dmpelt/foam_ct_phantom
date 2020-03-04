@@ -28,7 +28,6 @@ requirements:
     - h5py
     - psutil
     - numba
-    - sortedcollections
     - openmp
     - pathlib2
     

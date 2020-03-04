@@ -12,7 +12,6 @@
 
 import numpy as np
 import random
-import sortedcollections
 import tqdm
 import h5py
 import inspect
@@ -42,28 +41,29 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
     upd = np.zeros(n, dtype=np.uint32)
     spheres = np.zeros(nsph*5, dtype=np.float32)
 
-    sd = sortedcollections.ValueSortedDict(zip(range(ds.size), ds))
+    ccode.init_skiplist(ds)
 
     for i in tqdm.trange(nsph):
-        itms = sd.items()
-        if callable(maxsize)==False and itms[0][1]<-maxsize:
-            allchoices = []
-            for itm in itms:
-                if itm[1] >= -maxsize:
+        itr = ccode.skiplist_iter()
+        smallidx = next(itr)
+        if callable(maxsize)==False and ds[smallidx]<-maxsize:
+            allchoices = [smallidx,]
+            for itm in itr:
+                if ds[itm] >= -maxsize:
                     break
-                allchoices.append(itm[0])
+                allchoices.append(itm)
             ch = random.choice(allchoices)
             spheres[5*i+3] = maxsize
         else:
-            allchoices = [itms[0][0],]
-            curmax = itms[0][1]
-            for itm in range(1,len(itms)):
-                if itms[itm][1] == curmax:
-                    allchoices.append(itms[itm][0])
+            allchoices = [smallidx,]
+            curmax = ds[smallidx]
+            for itm in itr:
+                if ds[itm] == curmax:
+                    allchoices.append(itm)
                 else:
                     break
             ch = random.choice(allchoices)
-            spheres[5*i+3] = -sd[ch]
+            spheres[5*i+3] = -ds[ch]
         spheres[5*i] = pos3[3*ch]
         spheres[5*i+1] = pos3[3*ch+1]
         spheres[5*i+2] = pos3[3*ch+2]
@@ -72,8 +72,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
             maxsizes = maxsize(pos3[3*upd[:nupd]],pos3[3*upd[:nupd]+1],pos3[3*upd[:nupd]+2])
             msk = ds[upd[:nupd]] < -maxsizes
             ds[upd[:nupd][msk]] = -maxsizes[msk]
-        for ky in upd[:nupd]:
-            sd[ky] = ds[ky]
+        ccode.update_skiplist(ds,upd[:nupd])
     
     with h5py.File(outfile,'w') as f:
         f['spheres'] = spheres
