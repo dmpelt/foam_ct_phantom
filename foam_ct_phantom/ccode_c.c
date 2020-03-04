@@ -99,6 +99,7 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
                     const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
                     if(dsn<dsv){
                         dsv = dsn;
+                        if (dsv<0) break;
                     }
                 }
             }
