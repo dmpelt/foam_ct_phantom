@@ -43,7 +43,9 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
 
     ccode.init_skiplist(ds)
 
+    ccode.init_time_arrays(nsph)
     for i in tqdm.trange(nsph):
+        ccode.lib.start_time_per_iteration()
         itr = ccode.skiplist_iter()
         smallidx = next(itr)
         if callable(maxsize)==False and ds[smallidx]<-maxsize:
@@ -73,6 +75,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
             msk = ds[upd[:nupd]] < -maxsizes
             ds[upd[:nupd][msk]] = -maxsizes[msk]
         ccode.update_skiplist(ds,upd[:nupd])
+        ccode.lib.end_time_per_iteration(i)
     
     with h5py.File(outfile,'w') as f:
         f['spheres'] = spheres

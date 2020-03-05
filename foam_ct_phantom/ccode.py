@@ -204,3 +204,12 @@ try:
             proj[iy,ix] = tmp
 except:
     pass
+
+def init_time_arrays(n):
+    lib.init_time_arrays(asuint(n))
+
+def end_time_per_iteration(i):
+    lib.end_time_per_iteration(asuint(i))
+
+def get_time_per_iterations(out):
+    lib.get_time_per_iterations(asfloatp(out), asuint(out.size))

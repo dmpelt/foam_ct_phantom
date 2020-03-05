@@ -26,6 +26,37 @@
 
 #endif
 
+
+/* Timing functions */
+#ifdef DOTIMING
+#include <time.h>
+float * time_per_iteration = NULL;
+struct timespec  it_start, it_end;
+DECLDIR void init_time_arrays(unsigned int n){
+    if (time_per_iteration) free(time_per_iteration);
+    time_per_iteration = (float *) malloc(n*sizeof(double));
+}
+DECLDIR void start_time_per_iteration(){
+    clock_gettime(CLOCK_MONOTONIC, &it_start);
+}
+DECLDIR void end_time_per_iteration(unsigned int i){
+    clock_gettime(CLOCK_MONOTONIC, &it_end);
+    time_per_iteration[i] = it_end.tv_sec - it_start.tv_sec;
+    time_per_iteration[i] += (it_end.tv_nsec - it_start.tv_nsec)/1000000000.0;
+}
+DECLDIR void get_time_per_iterations(float * out, unsigned int n){
+    for (unsigned int i=0; i<n; i++){
+        out[i] = time_per_iteration[i];
+    }
+}
+#else
+DECLDIR void init_time_arrays(unsigned int n){}
+DECLDIR void start_time_per_iteration(){}
+DECLDIR void end_time_per_iteration(unsigned int i){}
+DECLDIR void get_time_per_iterations(float * out, unsigned int n){}
+#endif
+
+
 #ifndef __MTWISTER_H
 #define __MTWISTER_H
 
@@ -835,3 +866,4 @@ DECLDIR void init_skiplist(float * sizes, unsigned int ns){
     
     free(idx);
 }
+
