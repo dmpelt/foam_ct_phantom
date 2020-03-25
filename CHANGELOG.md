@@ -4,6 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [1.1.0]
+### Added
 - Support for nonuniform void distributions
 - Support for creating 3D renderings of voids
 
@@ -19,4 +28,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.0.0...v1.1.0
