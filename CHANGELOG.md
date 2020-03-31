@@ -6,6 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Fixed
+
+### Removed
+
+## [1.1.1]
+### Added
+
+### Changed
 - Reduced phantom generation time by using a custom skiplist
 
 ### Fixed
@@ -29,5 +38,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.0.0...v1.1.0
