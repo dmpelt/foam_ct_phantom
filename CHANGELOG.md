@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Reduced phantom generation time by using a custom skiplist
 
 ### Fixed
 

@@ -41,6 +41,7 @@ def asuintp(arr):
 
 lib.newsphere.restype = ctypes.c_uint32
 lib.gettouching.restype = ctypes.c_uint32
+lib.iter_skiplist.restype = ctypes.c_int32
 
 def drawnewpositions(pos3, ds, zrange):
     lib.drawnewpositions(asfloatp(pos3), asfloatp(ds), asuint(ds.size), asfloat(zrange))
@@ -113,6 +114,19 @@ def genconeproj(spheres, nx, ny, pixsize, angle, sod, sdd, zoff=0):
 
 def applypoisson(proj, flux, factor):
     lib.applypoisson(asfloatp(proj.ravel()), asuint(proj.size), asfloat(flux), asfloat(factor))
+
+def init_skiplist(sizes):
+    lib.init_skiplist(asfloatp(sizes), asuint(sizes.size))
+
+def update_skiplist(sizes, idx):
+    lib.update_skiplist(asfloatp(sizes), asuintp(idx), asuint(idx.size))
+
+def skiplist_iter():
+    lib.reset_iter_skiplist()
+    val = lib.iter_skiplist()
+    while val != -1:
+        yield val
+        val = lib.iter_skiplist()
 
 # Try to set number of threads to number of physical cores
 try:

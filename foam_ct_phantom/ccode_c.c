@@ -14,6 +14,7 @@
 #include <math.h>
 #include <omp.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #ifdef _MSC_VER
 
@@ -78,6 +79,7 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
     const float nz = spheres[(nspheres-1)*5+2];
     const float nsz = spheres[(nspheres-1)*5+3];
     unsigned int nupdated=0;
+    #pragma omp parallel for shared(nupdated)
     for(unsigned int i=0; i<ntrials; i++){
         float x = pos3[3*i];
         float y = pos3[3*i+1];
@@ -93,12 +95,11 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
                 }
                 z = zrange*(2*genRand(&randgen)-1);
                 int j;
-                #pragma omp parallel for shared(dsv) firstprivate(x, y, z, nspheres) private(j)
                 for(j=0; j<nspheres; j++){
                     const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
                     if(dsn<dsv){
-                        #pragma omp critical
-                        if(dsn<dsv) dsv = dsn;
+                        dsv = dsn;
+                        if (dsv<0) break;
                     }
                 }
             }
@@ -106,17 +107,22 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
             pos3[3*i+1] = y;
             pos3[3*i+2] = z;
             ds[i] = -dsv;
-            updated[nupdated] = i;
-            nupdated++;
-        }else{
-            if(dsv<-ds[i]){
-                ds[i] = -dsv;
+            #pragma omp critical
+            {
                 updated[nupdated] = i;
                 nupdated++;
             }
+        }else{
+            if(dsv<-ds[i]){
+                ds[i] = -dsv;
+                #pragma omp critical
+                {
+                    updated[nupdated] = i;
+                    nupdated++;
+                }
+            }
         }
     }
-    // printf("%d\n",nupdated);
     return nupdated;
 }
 
@@ -586,4 +592,246 @@ unsigned long genRandLong(MTRand* rand) {
  */
 float genRand(MTRand* rand) {
   return((float)genRandLong(rand) / (unsigned long)0xffffffff);
+}
+
+
+
+/**
+ * Skip list implementation
+ * Follows http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/Map/skip-list-impl.html
+ */
+
+struct sknode {
+    float val;
+    unsigned int idx;
+    struct sknode * left;
+    struct sknode * right;
+    struct sknode * up;
+    struct sknode * down;
+};
+
+
+void init_sknode(struct sknode * c){
+    c->right = NULL;
+    c->left = NULL;
+    c->up = NULL;
+    c->down = NULL;
+}
+
+
+struct sknode * skhead = NULL;
+struct sknode * sktail = NULL;
+unsigned int skh = 1;
+unsigned int nskpool = 0;
+struct sknode * skpool = NULL;
+
+void clear_skiplist(){
+    struct sknode * cur;
+    struct sknode * next;
+    if (skpool) {
+        for (unsigned int i=0; i<nskpool; i++){
+            cur = skpool[i].up;
+            while (cur){
+                next = cur->up;
+                free(cur);
+                cur = next;
+            }
+        }
+        free(skpool);
+        skpool = NULL;
+    }
+    if (skhead) {
+        cur = skhead;
+        while (cur){
+            next = cur->down;
+            free(cur);
+            cur = next;
+        }
+        skhead = NULL;
+    }
+    if (sktail) {
+        cur = sktail;
+        while (cur){
+            next = cur->down;
+            free(cur);
+            cur = next;
+        }
+        sktail = NULL;
+    }
+}
+
+MTRand skrand;
+
+struct sksort {
+    unsigned int idx;
+    float val;
+};
+
+int skcompare(const void *a, const void *b){
+    struct sksort *aa = (struct sksort *)a;
+    struct sksort *bb = (struct sksort *)b;
+    return (aa->val > bb->val) - (aa->val < bb->val);
+}
+
+void insert_node_to_skiplist(struct sknode * node, struct sknode * prev){
+    while (1){
+        struct sknode * right = prev->right;
+        prev->right = node;
+        node->left = prev;
+        node->right = right;
+        right->left = node;
+        if (genRand(&skrand)>0.5){
+            struct sknode * newnode = (struct sknode *) malloc(sizeof(struct sknode));
+            init_sknode(newnode);
+            newnode->val = node->val;
+            newnode->idx = node->idx;
+            newnode->down = node;
+            node->up = newnode;
+            node = newnode;
+            while(prev->up == NULL){
+                if (prev->left){
+                    prev = prev->left;
+                }else{
+                    struct sknode * newhead = (struct sknode *) malloc(sizeof(struct sknode));
+                    init_sknode(newhead);
+                    newhead->val = -INFINITY;
+                    newhead->down = skhead;
+                    skhead->up = newhead;
+                    skhead = newhead;
+                    
+                    struct sknode * newtail = (struct sknode *) malloc(sizeof(struct sknode));
+                    init_sknode(newtail);
+                    newtail->val = INFINITY;
+                    newtail->down = sktail;
+                    sktail->up = newtail;
+                    sktail = newtail;
+
+                    skhead->right = sktail;
+                    sktail->left = skhead;
+                    break;
+                }
+            }
+            prev = prev->up;
+        }else{
+            break;
+        }
+    }
+}
+
+void add_idx_to_skiplist(const unsigned int * const idx, const unsigned int nidx){
+    struct sksort * sortlist = (struct sksort *) malloc(nidx * sizeof(struct sksort));
+    for (unsigned int i=0; i<nidx; i++){
+        sortlist[i].idx = idx[i];
+        sortlist[i].val = skpool[idx[i]].val;
+    }
+    qsort (sortlist, nidx, sizeof(struct sksort), skcompare);
+    struct sknode * cur = skhead;
+    unsigned char up_possible = 0;
+    for (unsigned int i=0; i<nidx; i++){
+        float cv = sortlist[i].val;
+        while (1){
+            while (cur->right->val < cv){
+                if (up_possible && cur->up){
+                    cur = cur->up;
+                }else{
+                    cur = cur->right;
+                }
+            }
+            up_possible = 0;
+            if (cur->down){
+                cur = cur->down;
+            }else{
+                break;
+            }
+        }
+        insert_node_to_skiplist(skpool + sortlist[i].idx, cur);
+        up_possible=1;
+    }
+    free(sortlist);
+}
+
+void remove_idx_from_skiplist(const unsigned int * const idx, const unsigned int nidx){
+    struct sknode * cur;
+    struct sknode * next;
+    for (unsigned int i=0; i<nidx; i++){
+        cur = skpool + idx[i];
+        cur->left->right = cur->right;
+        cur->right->left = cur->left;
+        cur = cur->up;
+        if (cur) cur->down->up = NULL;
+        while(cur){
+            cur->left->right = cur->right;
+            cur->right->left = cur->left;
+            next = cur->up;
+            free(cur);
+            cur = next;
+        }
+    }
+}
+
+DECLDIR void update_skiplist(const float * const sizes, const unsigned int * const idx, const unsigned int nidx){
+    remove_idx_from_skiplist(idx, nidx);
+    for (unsigned int i=0; i<nidx; i++){
+        skpool[idx[i]].val = sizes[idx[i]];
+    }
+    add_idx_to_skiplist(idx, nidx);
+}
+
+struct sknode * skiplist_iter;
+DECLDIR void reset_iter_skiplist(){
+    skiplist_iter = skhead;
+    while(skiplist_iter->down){
+        skiplist_iter = skiplist_iter->down;
+    }
+    skiplist_iter = skiplist_iter->right;
+}
+
+DECLDIR int iter_skiplist(){
+    if (skiplist_iter->right){
+        skiplist_iter = skiplist_iter->right;
+        return skiplist_iter->left->idx;
+    }else{
+        return -1;
+    }
+}
+
+DECLDIR void check_skiplist(){
+    float cur = -INFINITY;
+    reset_iter_skiplist();
+    int idx = iter_skiplist();
+    while(idx!=-1){
+        if (skpool[idx].val<cur){
+            printf("SKIPLIST ERROR! %f < %f\n", skpool[idx].val, cur);
+        }
+        idx = iter_skiplist();
+    }
+}
+
+DECLDIR void init_skiplist(float * sizes, unsigned int ns){
+    clear_skiplist();
+    m_seedRand(&skrand, 12345);
+    skhead = (struct sknode * ) malloc(sizeof(struct sknode));
+    init_sknode(skhead);
+    skhead->val = -INFINITY;
+    sktail = (struct sknode * ) malloc(sizeof(struct sknode));
+    init_sknode(sktail);
+    sktail->val = INFINITY;
+    skhead->right = sktail;
+    sktail->left = skhead;
+    skpool = (struct sknode * ) malloc(ns*sizeof(struct sknode));
+    nskpool = ns;
+    for (unsigned int i=0; i<ns; i++){
+        skpool[i].idx = i;
+        skpool[i].val = sizes[i];
+        init_sknode(skpool + i);
+    }
+
+    unsigned int *idx = (unsigned int *) malloc(ns*sizeof(unsigned int));
+    for (unsigned int i=0; i<ns ; i++){
+        idx[i] = i;
+    }
+
+    add_idx_to_skiplist(idx, ns);
+    
+    free(idx);
 }
