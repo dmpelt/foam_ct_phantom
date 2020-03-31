@@ -79,8 +79,9 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
     const float nz = spheres[(nspheres-1)*5+2];
     const float nsz = spheres[(nspheres-1)*5+3];
     unsigned int nupdated=0;
-    #pragma omp parallel for shared(nupdated)
-    for(unsigned int i=0; i<ntrials; i++){
+    int i;
+    #pragma omp parallel for shared(nupdated) private(i)
+    for(i=0; i<ntrials; i++){
         float x = pos3[3*i];
         float y = pos3[3*i+1];
         float z = pos3[3*i+2];
