@@ -2,7 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [1.1.2]
 ### Added
 
 ### Changed
@@ -39,6 +49,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/dmpelt/foam_ct_phantom/compare/v1.0.0...v1.1.0
