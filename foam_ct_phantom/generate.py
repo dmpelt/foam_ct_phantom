@@ -149,7 +149,7 @@ def gen_dataset(outfile, phantom, geom):
             for t in threads:
                 t.start()
             pbar = tqdm.tqdm(total=len(angles))
-            for i in range(len(angles)/ngpus):
+            for i in range(len(angles)//ngpus):
                 for j in range(i*ngpus, (i+1)*ngpus):
                     q.put(j)
                 q.join()
