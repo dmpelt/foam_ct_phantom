@@ -144,6 +144,7 @@ def gen_dataset(outfile, phantom, geom):
                         break
                     tmpdata[threadid] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[item], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
                     q.task_done()
+                ccode.close_cuda_context()
             q = queue.Queue()
             threads = [threading.Thread(target=worker, args=(i,)) for i in range(ngpus)]
             for t in threads:
@@ -155,7 +156,7 @@ def gen_dataset(outfile, phantom, geom):
                 q.join()
                 for j in range(ngpus):
                     dset[i*ngpus+j] = tmpdata[j]
-                pbar.update(4)
+                pbar.update(ngpus)
             for i in range(int(len(angles)/ngpus)*ngpus, len(angles)):
                 dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
                 pbar.update(1)

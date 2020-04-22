@@ -148,6 +148,9 @@ try:
 
     def set_cuda_device(devid):
         cuda.select_device(devid)
+    
+    def close_cuda_context():
+        cuda.close()
 
     def genconeproj_cuda(spheres, nx, ny, pixsize, angle, sod, sdd, zoff=0):
         proj = cuda.to_device(np.zeros((ny,nx),dtype=np.float32))
