@@ -146,6 +146,9 @@ try:
     from numba import cuda, float32, int32
     import math
 
+    def set_cuda_device(devid):
+        cuda.select_device(devid)
+
     def genconeproj_cuda(spheres, nx, ny, pixsize, angle, sod, sdd, zoff=0):
         proj = cuda.to_device(np.zeros((ny,nx),dtype=np.float32))
         bpg0 = (ny + (32 - 1)) // 32
