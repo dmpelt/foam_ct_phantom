@@ -147,19 +147,27 @@ def gen_dataset(outfile, phantom, geom):
                 ccode.close_cuda_context()
             q = queue.Queue()
             threads = [threading.Thread(target=worker, args=(i,)) for i in range(ngpus)]
-            for t in threads:
-                t.start()
             pbar = tqdm.tqdm(total=len(angles))
-            for i in range(len(angles)//ngpus):
-                for j in range(i*ngpus, (i+1)*ngpus):
-                    q.put(j)
-                q.join()
-                for j in range(ngpus):
-                    dset[i*ngpus+j] = tmpdata[j]
-                pbar.update(ngpus)
-            for i in range(int(len(angles)/ngpus)*ngpus, len(angles)):
-                dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
-                pbar.update(1)
+            try:
+                for t in threads:
+                    t.start()
+                for i in range(len(angles)//ngpus):
+                    for j in range(i*ngpus, (i+1)*ngpus):
+                        q.put(j)
+                    q.join()
+                    for j in range(ngpus):
+                        dset[i*ngpus+j] = tmpdata[j]
+                    pbar.update(ngpus)
+                for i in range(int(len(angles)/ngpus)*ngpus, len(angles)):
+                    dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
+                    pbar.update(1)
+            except KeyboardInterrupt:
+                pbar.close()
+                for i in range(ngpus):
+                    q.put(None)
+                for t in threads:
+                    t.join()
+                raise
             pbar.close()
             for i in range(ngpus):
                 q.put(None)
