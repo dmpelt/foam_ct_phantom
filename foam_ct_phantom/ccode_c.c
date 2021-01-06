@@ -116,8 +116,8 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
         }
     }
 
-    unsigned int cur=0;
-    #pragma omp parallel shared(nupdated, cur)
+    volatile unsigned int cur=0;
+    #pragma omp parallel shared(nupdated, cur) firstprivate(ntobeplaced)
     {
         MTRand lrandgen;
         m_seedRand(&lrandgen, seeds[omp_get_thread_num()]);
