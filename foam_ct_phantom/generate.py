@@ -40,6 +40,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
         msk = ds<-maxsizes
         ds[msk] = -maxsizes[msk]
 
+    tobeplaced = np.zeros(n, dtype=np.int32)
     upd = np.zeros(n, dtype=np.uint32)
     spheres = np.zeros(nsph*5, dtype=np.float32)
 
@@ -69,7 +70,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
         spheres[5*i] = pos3[3*ch]
         spheres[5*i+1] = pos3[3*ch+1]
         spheres[5*i+2] = pos3[3*ch+2]
-        nupd = ccode.newsphere(pos3, ds, spheres[:5*(i+1)], zrange, upd)
+        nupd = ccode.newsphere(pos3, ds, spheres[:5*(i+1)], zrange, upd, tobeplaced)
         if callable(maxsize):
             maxsizes = maxsize(pos3[3*upd[:nupd]],pos3[3*upd[:nupd]+1],pos3[3*upd[:nupd]+2])
             msk = ds[upd[:nupd]] < -maxsizes
