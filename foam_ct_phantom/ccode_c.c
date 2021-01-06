@@ -15,6 +15,7 @@
 #include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
 #ifdef _MSC_VER
 
@@ -78,40 +79,30 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
     const float ny = spheres[(nspheres-1)*5+1];
     const float nz = spheres[(nspheres-1)*5+2];
     const float nsz = spheres[(nspheres-1)*5+3];
-    unsigned int nupdated=0;
+    
+    const unsigned int nthr = omp_get_max_threads();
+    unsigned int * seeds = (unsigned int *) malloc(sizeof(unsigned int)*nthr);
+    int j;
+    for(j=0;j<nthr;j++){
+        seeds[j] = (unsigned int) UINT_MAX*genRand(&randgen);
+    }
+
+    unsigned int nupdated = 0;
+    unsigned int * tobeplaced = (unsigned int *) malloc(sizeof(unsigned int) * ntrials);
+    unsigned int ntobeplaced = 0;
+
     int i;
-    #pragma omp parallel for shared(nupdated) private(i)
+    #pragma omp parallel for shared(nupdated, ntobeplaced) private(i)
     for(i=0; i<ntrials; i++){
         float x = pos3[3*i];
         float y = pos3[3*i+1];
         float z = pos3[3*i+2];
         float dsv = sqrtf((nx-x)*(nx-x) + (ny-y)*(ny-y) + (nz-z)*(nz-z)) - nsz;
         if(dsv<0){
-            while(dsv<0){
-                x = 2*genRand(&randgen)-1;
-                y = 2*genRand(&randgen)-1;
-                dsv = 1 - sqrtf(x*x + y*y);
-                if(dsv<0){
-                    continue;
-                }
-                z = zrange*(2*genRand(&randgen)-1);
-                int j;
-                for(j=0; j<nspheres; j++){
-                    const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
-                    if(dsn<dsv){
-                        dsv = dsn;
-                        if (dsv<0) break;
-                    }
-                }
-            }
-            pos3[3*i] = x;
-            pos3[3*i+1] = y;
-            pos3[3*i+2] = z;
-            ds[i] = -dsv;
-            #pragma omp critical
+           #pragma omp critical
             {
-                updated[nupdated] = i;
-                nupdated++;
+                tobeplaced[ntobeplaced] = i;
+                ntobeplaced++;
             }
         }else{
             if(dsv<-ds[i]){
@@ -124,8 +115,100 @@ DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float
             }
         }
     }
+
+    unsigned int cur=0;
+    #pragma omp parallel shared(nupdated, cur)
+    {
+        MTRand lrandgen;
+        m_seedRand(&lrandgen, seeds[omp_get_thread_num()]);
+        float dsv, x, y, z;
+        char cont = 1;
+        while(cont){
+            do{
+                if (cur>=ntobeplaced) break;
+                x = 2*genRand(&lrandgen)-1;
+                y = 2*genRand(&lrandgen)-1;
+                dsv = 1 - sqrtf(x*x + y*y);
+                if(dsv<0){
+                    continue;
+                }
+                z = zrange*(2*genRand(&lrandgen)-1);
+                int j;
+                for(j=0; j<nspheres; j++){
+                    const float dsn = sqrtf((spheres[5*j]-x)*(spheres[5*j]-x) + (spheres[5*j+1]-y)*(spheres[5*j+1]-y) + (spheres[5*j+2]-z)*(spheres[5*j+2]-z)) - spheres[5*j+3];
+                    if(dsn<dsv){
+                        dsv = dsn;
+                        if (dsv<0) break;
+                    }
+                }
+            }while(dsv<0);
+
+            #pragma omp critical
+            {
+                if (cur>=ntobeplaced){
+                    cont=0;
+                }else{
+                    int k = tobeplaced[cur];
+                    pos3[3*k] = x;
+                    pos3[3*k+1] = y;
+                    pos3[3*k+2] = z;
+                    ds[k] = -dsv;
+                    updated[nupdated] = k;
+                    nupdated++;
+                    cur++;
+                }
+            }
+        }
+    }
+    free(seeds);
     return nupdated;
 }
+
+// DECLDIR unsigned int newsphere(float * const pos3, float * const ds, const float * const spheres, const unsigned int ntrials, const unsigned int nspheres, const float zrange, unsigned int * const updated){
+//     const float nx = spheres[(nspheres-1)*5];
+//     const float ny = spheres[(nspheres-1)*5+1];
+//     const float nz = spheres[(nspheres-1)*5+2];
+//     const float nsz = spheres[(nspheres-1)*5+3];
+//     unsigned int nupdated = 0;
+//     unsigned int * tobeplaced = (unsigned int *) malloc(sizeof(unsigned int) * ntrials);
+//     unsigned int ntobeplaced = 0;
+//     int i;
+//     #pragma omp parallel for shared(nupdated, ntobeplaced) private(i)
+//     for(i=0; i<ntrials; i++){
+//         float x = pos3[3*i];
+//         float y = pos3[3*i+1];
+//         float z = pos3[3*i+2];
+//         float dsv = sqrtf((nx-x)*(nx-x) + (ny-y)*(ny-y) + (nz-z)*(nz-z)) - nsz;
+//         if(dsv<0){
+//            #pragma omp critical
+//             {
+//                 tobeplaced[ntobeplaced] = i;
+//                 ntobeplaced++;
+//             }
+//         }else{
+//             if(dsv<-ds[i]){
+//                 ds[i] = -dsv;
+//                 #pragma omp critical
+//                 {
+//                     updated[nupdated] = i;
+//                     nupdated++;
+//                 }
+//             }
+//         }
+//     }
+
+//     unsigned int j=0;
+//     #pragma omp parallel shared(nupdated, j)
+//     while(1){
+//         float x, y, z;
+        
+//     }
+
+
+//     free(tobeplaced);
+//     return nupdated;
+// }
+
 
 
 DECLDIR void genvol(const float * const spheres, const unsigned int nspheres, float * const vol, const unsigned int * const n, const float voxsize, const float * const c, const unsigned int supersampling, const unsigned int iz){
