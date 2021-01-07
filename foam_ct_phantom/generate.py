@@ -15,6 +15,8 @@ import random
 import tqdm
 import h5py
 import inspect
+import queue
+import threading
 
 from . import ccode, project, geometry
 from .utils import FILE_VERSION
@@ -38,6 +40,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
         msk = ds<-maxsizes
         ds[msk] = -maxsizes[msk]
 
+    tobeplaced = np.zeros(n, dtype=np.int32)
     upd = np.zeros(n, dtype=np.uint32)
     spheres = np.zeros(nsph*5, dtype=np.float32)
 
@@ -69,7 +72,7 @@ def genphantom(outfile, seed, nspheres_per_unit=100000, ntrials_per_unit=1000000
         spheres[5*i] = pos3[3*ch]
         spheres[5*i+1] = pos3[3*ch+1]
         spheres[5*i+2] = pos3[3*ch+2]
-        nupd = ccode.newsphere(pos3, ds, spheres[:5*(i+1)], zrange, upd)
+        nupd = ccode.newsphere(pos3, ds, spheres[:5*(i+1)], zrange, upd, tobeplaced)
         if callable(maxsize):
             maxsizes = maxsize(pos3[3*upd[:nupd]],pos3[3*upd[:nupd]+1],pos3[3*upd[:nupd]+2])
             msk = ds[upd[:nupd]] < -maxsizes
@@ -133,11 +136,53 @@ def gen_dataset(outfile, phantom, geom):
     with h5py.File(outfile, 'w') as f:
         f.attrs['FILE_VERSION'] = FILE_VERSION
         dset = f.create_dataset('projs', (len(angles),ny,nx), dtype='f4')
-        for i in tqdm.trange(len(angles)):
-            if type(geom) == geometry.ParallelGeometry:
-                dset[i] = project.single_par_projection(phantom,nx,ny,pixsize,angles[i],cx=geom.cx,cy=geom.cy,rotcx=geom.rotcx,rotcy=geom.rotcy, supersampling=supersampling)
-            elif type(geom) == geometry.ConeGeometry:
-                dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=geom.usecuda)
+        if hasattr(geom, 'usecuda') and hasattr(geom.usecuda, '__iter__'):
+            # Use multiple GPUs
+            ngpus = len(geom.usecuda)
+            tmpdata = np.zeros((ngpus, ny, nx), dtype=np.float32)
+            def worker(threadid):
+                ccode.set_cuda_device(geom.usecuda[threadid])
+                while True:
+                    item = q.get()
+                    if item is None:
+                        break
+                    tmpdata[threadid] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[item], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
+                    q.task_done()
+                ccode.close_cuda_context()
+            q = queue.Queue()
+            threads = [threading.Thread(target=worker, args=(i,)) for i in range(ngpus)]
+            pbar = tqdm.tqdm(total=len(angles))
+            try:
+                for t in threads:
+                    t.start()
+                for i in range(len(angles)//ngpus):
+                    for j in range(i*ngpus, (i+1)*ngpus):
+                        q.put(j)
+                    q.join()
+                    for j in range(ngpus):
+                        dset[i*ngpus+j] = tmpdata[j]
+                    pbar.update(ngpus)
+                for i in range(int(len(angles)/ngpus)*ngpus, len(angles)):
+                    dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=True)
+                    pbar.update(1)
+            except KeyboardInterrupt:
+                pbar.close()
+                for i in range(ngpus):
+                    q.put(None)
+                for t in threads:
+                    t.join()
+                raise
+            pbar.close()
+            for i in range(ngpus):
+                q.put(None)
+            for t in threads:
+                t.join()
+        else:
+            for i in tqdm.trange(len(angles)):
+                if type(geom) == geometry.ParallelGeometry:
+                    dset[i] = project.single_par_projection(phantom,nx,ny,pixsize,angles[i],cx=geom.cx,cy=geom.cy,rotcx=geom.rotcx,rotcy=geom.rotcy, supersampling=supersampling)
+                elif type(geom) == geometry.ConeGeometry:
+                    dset[i] = project.single_cone_projection(phantom, nx, ny, pixsize, angles[i], geom.sod, geom.sod + geom.odd, zoff=geom.zoff, supersampling=supersampling, usecuda=geom.usecuda)
         att = dset.attrs
         for key, val in geom.to_dict().items():
             if key == "projgeom_angles":
