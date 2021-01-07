@@ -39,6 +39,11 @@ cuintp = ctypes.POINTER(ctypes.c_uint32)
 def asuintp(arr):
     return arr.ctypes.data_as(cuintp)
 
+cintp = ctypes.POINTER(ctypes.c_int32)
+def asintp(arr):
+    return arr.ctypes.data_as(cintp)
+
+
 lib.newsphere.restype = ctypes.c_uint32
 lib.gettouching.restype = ctypes.c_uint32
 lib.iter_skiplist.restype = ctypes.c_int32
@@ -46,8 +51,8 @@ lib.iter_skiplist.restype = ctypes.c_int32
 def drawnewpositions(pos3, ds, zrange):
     lib.drawnewpositions(asfloatp(pos3), asfloatp(ds), asuint(ds.size), asfloat(zrange))
 
-def newsphere(pos3, ds, spheres, zrange, updated):
-    return lib.newsphere(asfloatp(pos3), asfloatp(ds), asfloatp(spheres), asuint(ds.size), asuint(spheres.size//5), asfloat(zrange), asuintp(updated))
+def newsphere(pos3, ds, spheres, zrange, updated, tobeplaced):
+    return lib.newsphere(asfloatp(pos3), asfloatp(ds), asfloatp(spheres), asuint(ds.size), asuint(spheres.size//5), asfloat(zrange), asuintp(updated), asintp(tobeplaced))
 
 def gettouching(spheres, i, cutoff):
     touching = np.zeros(spheres.size//5, dtype=np.uint32)

@@ -8,8 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Multi-GPU support for cone-beam projections
 
 ### Changed
+- Faster generation of phantoms
 
 ### Fixed
+- Generating phantoms with the same seed now actually produces identical phantoms
 
 ### Removed
 

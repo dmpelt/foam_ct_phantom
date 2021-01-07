@@ -34,4 +34,4 @@ install:
 build: false
 test_script:
   - cd examples
-  - python -c "import foam_ct_phantom"
+  - python -c "import os; os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'; import foam_ct_phantom"
