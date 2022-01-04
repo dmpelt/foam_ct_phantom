@@ -16,9 +16,7 @@ A Python package for generating foam-like phantoms for CT.
 
 If you use this code in a publication, we would appreciate it if you would refer to:
 
-* Pelt, D. M., Batenburg, K. J., & Sethian, J. A. (2018). Improving tomographic reconstruction from limited data using mixed-scale dense convolutional neural networks. *Journal of Imaging, 4*(11), 128.
-
-A dedicated publication about this code is currently in preparation.
+* Pelt, D. M., Hendriksen, A. A., & Batenburg, K. J. (2022). Foam-like phantoms for comparing tomography algorithms. *Journal of Synchrotron Radiation, 29*(1), 254-265.
 
 Development of this code is supported by Centrum Wiskunde & Informatica (CWI), with financial support provided by The Netherlands Organisation for Scientific Research (NWO), project number 016.Veni.192.235.
 
